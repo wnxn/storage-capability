@@ -1,0 +1,18 @@
+apiVersion: storage.kubesphere.io/v1alpha1
+kind: ProvisionerCapability
+metadata:
+  name: csi.example.io
+spec:
+  pluginInfo:
+    name: "csi.example.io"
+  features:
+    topology: true
+    volume:
+      create: true
+      attach: true
+      list: false
+      clone: true
+      readOnlyAttach: false
+      expand: true
+    snapshot:
+      create: true
