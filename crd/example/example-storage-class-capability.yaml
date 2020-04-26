@@ -10,12 +10,11 @@ spec:
       create: true
       attach: true
       clone: true
+      list: false
       readOnlyAttach: true
       statics: true
       expand: true
     snapshot:
       create: true
       list: false
-    accessMode:
-      - ReadWriteOnce
-      - ReadWriteMany
+    accessMode: ["ReadWriteOnce", "ReadWriteMany"]

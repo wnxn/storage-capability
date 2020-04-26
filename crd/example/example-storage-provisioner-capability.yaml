@@ -5,6 +5,7 @@ metadata:
 spec:
   pluginInfo:
     name: "csi.example.io"
+    version: "v1.0.0"
   features:
     topology: true
     volume:
@@ -13,6 +14,8 @@ spec:
       list: false
       clone: true
       readOnlyAttach: false
+      statics: true
       expand: true
     snapshot:
       create: true
+      list: false
