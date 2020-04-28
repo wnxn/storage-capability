@@ -11,9 +11,8 @@ spec:
       attach: true
       clone: true
       list: false
-      readOnlyAttach: true
-      statics: true
-      expand: true
+      stats: true
+      expandMode: UNKNOWN
     snapshot:
       create: true
       list: false

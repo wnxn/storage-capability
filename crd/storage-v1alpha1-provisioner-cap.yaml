@@ -6,6 +6,7 @@ spec:
   # group name to use for REST API: /apis/<group>/<version>
   group: storage.kubesphere.io
   version: v1alpha1
+  preserveUnknownFields: false
   names:
     # plural name to be used in the URL: /apis/<group>/<version>/<plural>
     plural: provisionercapabilities
@@ -65,19 +66,26 @@ spec:
                   description: 'Volume represents whether plugin supports volume features'
                   properties:
                     create:
+                      description: 'Determined by ControllerGetCapabilities in ControllerServer'
                       type: boolean
                     attach:
+                      description: 'Determined by ControllerGetCapabilities in ControllerServer'
                       type: boolean
                     list:
+                      description: 'Determined by ControllerGetCapabilities in ControllerServer'
                       type: boolean
                     clone:
+                      description: 'Determined by ControllerGetCapabilities in ControllerServer'
                       type: boolean
-                    readOnlyAttach:
+                    stats:
+                      description: 'Determined by NodeGetCapabilities in NodeServer'
                       type: boolean
-                    statics:
-                      type: boolean
-                    expand:
-                      type: boolean
+                    expandMode:
+                      description: 'Determined by GetPluginCapabilities in IdentityServer'
+                      type: string
+                      items:
+                        type: string
+                        enum: ["UNKNOWN", "OFFLINE", "ONLINE"]
                 snapshot:
                   type: object
                   description: 'Snapshot represents whether plugin supports snapshot features'

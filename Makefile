@@ -16,5 +16,11 @@
 
 .PHONY: all get-api
 
-get-api:
+get-api: fmt
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build  -a -ldflags '-extldflags "-static"' -o  _output/get-api ./cmd/get-api/main.go
+
+sidecar: fmt
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build  -a -ldflags '-extldflags "-static"' -o  _output/sidecar ./cmd/sidecar/main.go
+
+fmt:
+	go fmt ./cmd/... ./pkg/...

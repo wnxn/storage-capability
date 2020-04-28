@@ -55,21 +55,26 @@ spec:
                   type: object
                   properties:
                     create:
+                      description: 'Determined by ControllerGetCapabilities in ControllerServer'
                       type: boolean
                     attach:
+                      description: 'Determined by ControllerGetCapabilities in ControllerServer'
                       type: boolean
                     list:
+                      description: 'Determined by ControllerGetCapabilities in ControllerServer'
                       type: boolean
                     clone:
-                      description: Determined by storage provisioner capability
+                      description: 'Determined by ControllerGetCapabilities in ControllerServer'
                       type: boolean
-                    readOnlyAttach:
+                    stats:
+                      description: 'Determined by NodeGetCapabilities in NodeServer'
                       type: boolean
-                    statics:
-                      type: boolean
-                    expand:
-                      description: Determined by allowVolumeExpansion in storage class and storage provisioner capability
-                      type: boolean
+                    expandMode:
+                      description: 'Determined by GetPluginCapabilities in IdentityServer'
+                      type: string
+                      items:
+                        type: string
+                        enum: ["UNKNOWN", "OFFLINE", "ONLINE"]
                 snapshot:
                   type: object
                   properties:

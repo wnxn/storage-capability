@@ -13,9 +13,8 @@ spec:
       attach: true
       list: false
       clone: true
-      readOnlyAttach: false
-      statics: true
-      expand: true
+      stats: true
+      expandMode: OFFLINE
     snapshot:
       create: true
       list: false

@@ -5,9 +5,9 @@ import (
 	"flag"
 	clientset "github.com/wnxn/storage-capability/pkg/generated/clientset/versioned"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/klog"
-	"k8s.io/client-go/kubernetes"
 )
 
 var (
@@ -32,22 +32,22 @@ func main() {
 	if err != nil {
 		klog.Fatalf("Error building kubernetes clientset: %s", err.Error())
 	}
-	scList, err := kubeClient.StorageV1().StorageClasses().List(context.Background(),v1.ListOptions{})
-	if err != nil{
+	scList, err := kubeClient.StorageV1().StorageClasses().List(context.Background(), v1.ListOptions{})
+	if err != nil {
 		klog.Fatal("sc client set error: ", err.Error())
 	}
-	for _, item := range scList.Items{
+	for _, item := range scList.Items {
 		klog.Info(item.GetName())
 	}
 
 	pcapList, err := exampleClient.StorageV1alpha1().ProvisionerCapabilities().List(context.Background(), v1.ListOptions{})
-	if err != nil{
+	if err != nil {
 		klog.Fatal("sccap client set error: ", err.Error())
 	}
 	klog.Info(len(pcapList.Items))
 
 	sccapList, err := exampleClient.StorageV1alpha1().StorageClassCapabilities().List(context.Background(), v1.ListOptions{})
-	if err != nil{
+	if err != nil {
 		klog.Fatal("sccap client set error: ", err.Error())
 	}
 	klog.Info(len(sccapList.Items))
