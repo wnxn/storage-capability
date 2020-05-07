@@ -22,5 +22,8 @@ get-api: fmt
 sidecar: fmt
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build  -a -ldflags '-extldflags "-static"' -o  _output/sidecar ./cmd/sidecar/main.go
 
+controller: fmt
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build  -a -ldflags '-extldflags "-static"' -o  _output/controller ./cmd/controller/main.go
+
 fmt:
 	go fmt ./cmd/... ./pkg/...

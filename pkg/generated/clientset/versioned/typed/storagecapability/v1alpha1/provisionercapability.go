@@ -19,7 +19,6 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"context"
 	"time"
 
 	v1alpha1 "github.com/wnxn/storage-capability/pkg/apis/storagecapability/v1alpha1"
@@ -38,14 +37,14 @@ type ProvisionerCapabilitiesGetter interface {
 
 // ProvisionerCapabilityInterface has methods to work with ProvisionerCapability resources.
 type ProvisionerCapabilityInterface interface {
-	Create(ctx context.Context, provisionerCapability *v1alpha1.ProvisionerCapability, opts v1.CreateOptions) (*v1alpha1.ProvisionerCapability, error)
-	Update(ctx context.Context, provisionerCapability *v1alpha1.ProvisionerCapability, opts v1.UpdateOptions) (*v1alpha1.ProvisionerCapability, error)
-	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
-	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.ProvisionerCapability, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.ProvisionerCapabilityList, error)
-	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ProvisionerCapability, err error)
+	Create(*v1alpha1.ProvisionerCapability) (*v1alpha1.ProvisionerCapability, error)
+	Update(*v1alpha1.ProvisionerCapability) (*v1alpha1.ProvisionerCapability, error)
+	Delete(name string, options *v1.DeleteOptions) error
+	DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error
+	Get(name string, options v1.GetOptions) (*v1alpha1.ProvisionerCapability, error)
+	List(opts v1.ListOptions) (*v1alpha1.ProvisionerCapabilityList, error)
+	Watch(opts v1.ListOptions) (watch.Interface, error)
+	Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1alpha1.ProvisionerCapability, err error)
 	ProvisionerCapabilityExpansion
 }
 
@@ -62,19 +61,19 @@ func newProvisionerCapabilities(c *StorageV1alpha1Client) *provisionerCapabiliti
 }
 
 // Get takes name of the provisionerCapability, and returns the corresponding provisionerCapability object, and an error if there is any.
-func (c *provisionerCapabilities) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ProvisionerCapability, err error) {
+func (c *provisionerCapabilities) Get(name string, options v1.GetOptions) (result *v1alpha1.ProvisionerCapability, err error) {
 	result = &v1alpha1.ProvisionerCapability{}
 	err = c.client.Get().
 		Resource("provisionercapabilities").
 		Name(name).
 		VersionedParams(&options, scheme.ParameterCodec).
-		Do(ctx).
+		Do().
 		Into(result)
 	return
 }
 
 // List takes label and field selectors, and returns the list of ProvisionerCapabilities that match those selectors.
-func (c *provisionerCapabilities) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ProvisionerCapabilityList, err error) {
+func (c *provisionerCapabilities) List(opts v1.ListOptions) (result *v1alpha1.ProvisionerCapabilityList, err error) {
 	var timeout time.Duration
 	if opts.TimeoutSeconds != nil {
 		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
@@ -84,13 +83,13 @@ func (c *provisionerCapabilities) List(ctx context.Context, opts v1.ListOptions)
 		Resource("provisionercapabilities").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Timeout(timeout).
-		Do(ctx).
+		Do().
 		Into(result)
 	return
 }
 
 // Watch returns a watch.Interface that watches the requested provisionerCapabilities.
-func (c *provisionerCapabilities) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+func (c *provisionerCapabilities) Watch(opts v1.ListOptions) (watch.Interface, error) {
 	var timeout time.Duration
 	if opts.TimeoutSeconds != nil {
 		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
@@ -100,69 +99,66 @@ func (c *provisionerCapabilities) Watch(ctx context.Context, opts v1.ListOptions
 		Resource("provisionercapabilities").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Timeout(timeout).
-		Watch(ctx)
+		Watch()
 }
 
 // Create takes the representation of a provisionerCapability and creates it.  Returns the server's representation of the provisionerCapability, and an error, if there is any.
-func (c *provisionerCapabilities) Create(ctx context.Context, provisionerCapability *v1alpha1.ProvisionerCapability, opts v1.CreateOptions) (result *v1alpha1.ProvisionerCapability, err error) {
+func (c *provisionerCapabilities) Create(provisionerCapability *v1alpha1.ProvisionerCapability) (result *v1alpha1.ProvisionerCapability, err error) {
 	result = &v1alpha1.ProvisionerCapability{}
 	err = c.client.Post().
 		Resource("provisionercapabilities").
-		VersionedParams(&opts, scheme.ParameterCodec).
 		Body(provisionerCapability).
-		Do(ctx).
+		Do().
 		Into(result)
 	return
 }
 
 // Update takes the representation of a provisionerCapability and updates it. Returns the server's representation of the provisionerCapability, and an error, if there is any.
-func (c *provisionerCapabilities) Update(ctx context.Context, provisionerCapability *v1alpha1.ProvisionerCapability, opts v1.UpdateOptions) (result *v1alpha1.ProvisionerCapability, err error) {
+func (c *provisionerCapabilities) Update(provisionerCapability *v1alpha1.ProvisionerCapability) (result *v1alpha1.ProvisionerCapability, err error) {
 	result = &v1alpha1.ProvisionerCapability{}
 	err = c.client.Put().
 		Resource("provisionercapabilities").
 		Name(provisionerCapability.Name).
-		VersionedParams(&opts, scheme.ParameterCodec).
 		Body(provisionerCapability).
-		Do(ctx).
+		Do().
 		Into(result)
 	return
 }
 
 // Delete takes name of the provisionerCapability and deletes it. Returns an error if one occurs.
-func (c *provisionerCapabilities) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+func (c *provisionerCapabilities) Delete(name string, options *v1.DeleteOptions) error {
 	return c.client.Delete().
 		Resource("provisionercapabilities").
 		Name(name).
-		Body(&opts).
-		Do(ctx).
+		Body(options).
+		Do().
 		Error()
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *provisionerCapabilities) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+func (c *provisionerCapabilities) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
 	var timeout time.Duration
-	if listOpts.TimeoutSeconds != nil {
-		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
+	if listOptions.TimeoutSeconds != nil {
+		timeout = time.Duration(*listOptions.TimeoutSeconds) * time.Second
 	}
 	return c.client.Delete().
 		Resource("provisionercapabilities").
-		VersionedParams(&listOpts, scheme.ParameterCodec).
+		VersionedParams(&listOptions, scheme.ParameterCodec).
 		Timeout(timeout).
-		Body(&opts).
-		Do(ctx).
+		Body(options).
+		Do().
 		Error()
 }
 
 // Patch applies the patch and returns the patched provisionerCapability.
-func (c *provisionerCapabilities) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ProvisionerCapability, err error) {
+func (c *provisionerCapabilities) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1alpha1.ProvisionerCapability, err error) {
 	result = &v1alpha1.ProvisionerCapability{}
 	err = c.client.Patch(pt).
 		Resource("provisionercapabilities").
-		Name(name).
 		SubResource(subresources...).
-		VersionedParams(&opts, scheme.ParameterCodec).
+		Name(name).
 		Body(data).
-		Do(ctx).
+		Do().
 		Into(result)
 	return
 }

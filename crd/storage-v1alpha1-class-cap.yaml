@@ -82,8 +82,3 @@ spec:
                       type: boolean
                     list:
                       type: boolean
-                accessMode:
-                  type: array
-                  items:
-                    type: string
-                    enum: ["ReadWriteOnce", "ReadWriteMany", "ReadOnlyMany"]

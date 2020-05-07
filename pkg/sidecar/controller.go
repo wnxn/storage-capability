@@ -1,7 +1,6 @@
 package sidecar
 
 import (
-	"context"
 	"github.com/wnxn/storage-capability/pkg/apis/storagecapability/v1alpha1"
 	clientset "github.com/wnxn/storage-capability/pkg/generated/clientset/versioned"
 	informers "github.com/wnxn/storage-capability/pkg/generated/informers/externalversions/storagecapability/v1alpha1"
@@ -72,9 +71,7 @@ func (ctrl *csiSidecarController) createOrUpdateProvisionerCRD(pcapSpec *v1alpha
 		return nil, nil
 	}
 	// Check object existed
-	ctx, cancel := context.WithTimeout(context.Background(), ctrl.timeout)
-	defer cancel()
-	pcap, err := ctrl.clientset.StorageV1alpha1().ProvisionerCapabilities().Get(ctx, ctrl.driverName, v1.GetOptions{})
+	pcap, err := ctrl.clientset.StorageV1alpha1().ProvisionerCapabilities().Get(ctrl.driverName, v1.GetOptions{})
 	klog.Info(pcap)
 	if err != nil {
 		klog.Errorf("Get provisioner CRD error: %s", err)
@@ -84,9 +81,7 @@ func (ctrl *csiSidecarController) createOrUpdateProvisionerCRD(pcapSpec *v1alpha
 		if !reflect.DeepEqual(pcap.Spec, pcapSpec) {
 			klog.V(0).Infof("Update CRD")
 			pcap.Spec = *pcapSpec
-			ctx, cancel := context.WithTimeout(context.Background(), ctrl.timeout)
-			defer cancel()
-			return ctrl.clientset.StorageV1alpha1().ProvisionerCapabilities().Update(ctx, pcap, v1.UpdateOptions{})
+			return ctrl.clientset.StorageV1alpha1().ProvisionerCapabilities().Update(pcap)
 		} else {
 			klog.V(0).Infof("CRD is equal to current status, nothing to update")
 			return nil, nil
@@ -94,14 +89,12 @@ func (ctrl *csiSidecarController) createOrUpdateProvisionerCRD(pcapSpec *v1alpha
 	} else {
 		// Need to create CRD
 		klog.V(0).Infof("Create CRD")
-		ctx, cancel := context.WithTimeout(context.Background(), ctrl.timeout)
-		defer cancel()
-		return ctrl.clientset.StorageV1alpha1().ProvisionerCapabilities().Create(ctx,
+		return ctrl.clientset.StorageV1alpha1().ProvisionerCapabilities().Create(
 			&v1alpha1.ProvisionerCapability{
 				ObjectMeta: v1.ObjectMeta{
 					Name: ctrl.driverName,
 				},
 				Spec: *pcapSpec,
-			}, v1.CreateOptions{})
+			})
 	}
 }

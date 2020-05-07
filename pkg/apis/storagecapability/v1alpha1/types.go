@@ -77,19 +77,10 @@ type StorageClassCapabilitySpec struct {
 	Features    StorageClassCapabilitySpecFeatures `json:"features"`
 }
 
-type AccessMode string
-
-const (
-	AccessModeReadWriteOnce AccessMode = "ReadWriteOnce"
-	AccessModeReadWriteMany AccessMode = "ReadWriteMany"
-	AccessModeReadOnlyMany  AccessMode = "ReadOnlyMany"
-)
-
 type StorageClassCapabilitySpecFeatures struct {
-	Topology   bool                                      `json:"topology"`
-	Volume     ProvisionerCapabilitySpecFeaturesVolume   `json:"volume"`
-	Snapshot   ProvisionerCapabilitySpecFeaturesSnapshot `json:"snapshot"`
-	AccessMode []AccessMode                              `json:"accessMode"`
+	Topology bool                                      `json:"topology"`
+	Volume   ProvisionerCapabilitySpecFeaturesVolume   `json:"volume"`
+	Snapshot ProvisionerCapabilitySpecFeaturesSnapshot `json:"snapshot"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

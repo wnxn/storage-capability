@@ -16,4 +16,3 @@ spec:
     snapshot:
       create: true
       list: false
-    accessMode: ["ReadWriteOnce", "ReadWriteMany"]

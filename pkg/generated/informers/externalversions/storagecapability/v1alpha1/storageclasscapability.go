@@ -19,7 +19,6 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"context"
 	time "time"
 
 	storagecapabilityv1alpha1 "github.com/wnxn/storage-capability/pkg/apis/storagecapability/v1alpha1"
@@ -61,13 +60,13 @@ func NewFilteredStorageClassCapabilityInformer(client versioned.Interface, resyn
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.StorageV1alpha1().StorageClassCapabilities().List(context.TODO(), options)
+				return client.StorageV1alpha1().StorageClassCapabilities().List(options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.StorageV1alpha1().StorageClassCapabilities().Watch(context.TODO(), options)
+				return client.StorageV1alpha1().StorageClassCapabilities().Watch(options)
 			},
 		},
 		&storagecapabilityv1alpha1.StorageClassCapability{},
