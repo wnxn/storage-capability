@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: storage-capability
+    owner: yunify
+    role: sidecar
+    ver: v0.1.0
+  name: storage-capability-sidecar
+  namespace: kube-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storage-capability
+      owner: yunify
+      role: sidecar
+      ver: v0.1.0
+  template:
+    metadata:
+      labels:
+        app: storage-capability
+        owner: yunify
+        role: sidecar
+        ver: v0.1.0
+    spec:
+      containers:
+        - args:
+            - --csi-address=$(ADDRESS)
+            - --driver-name="disk.csi.qingcloud.com"
+            - --v=5
+          env:
+            - name: ADDRESS
+              value: /csi/csi.sock
+          image: wangxinsh/storage-capability-sidecar:v0.1.0
+          imagePullPolicy: Always
+          name: sidecar
+          resources:
+            limits:
+              cpu: 80m
+              memory: 80Mi
+            requests:
+              cpu: 80m
+              memory: 80Mi
+          volumeMounts:
+            - mountPath: /csi
+              name: socket-dir
+      serviceAccount: storage-capability-sidecar
+      volumes:
+        - emptyDir: null
+          name: socket-dir

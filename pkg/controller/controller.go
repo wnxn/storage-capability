@@ -14,6 +14,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
+	"k8s.io/apimachinery/pkg/util/version"
 	"k8s.io/apimachinery/pkg/util/wait"
 	scinformers "k8s.io/client-go/informers/storage/v1"
 	"k8s.io/client-go/kubernetes"
@@ -33,6 +34,8 @@ const (
 	MessageResourceExists = "Resource %q already exists and is not managed by Foo"
 
 	MessageResourceSynced = "StorageClassCapability synced successfully"
+
+	MinimalKubernetesVersion = "v1.17.0"
 )
 
 type Controller struct {
@@ -108,8 +111,15 @@ func NewController(
 }
 
 func (c *Controller) enqueueSccap(obj interface{}) {
+	isValid, err := c.IsValidKubernetesVersion()
+	if err != nil {
+		return
+	}
+	if !isValid {
+		klog.V(4).Info("Storage capability only supports Kubernetes v1.17+, ignored")
+		return
+	}
 	var key string
-	var err error
 	if key, err = cache.MetaNamespaceKeyFunc(obj); err != nil {
 		utilruntime.HandleError(err)
 		return
@@ -141,6 +151,13 @@ func (c *Controller) Run(threadiness int, stopCh <-chan struct{}) error {
 	defer utilruntime.HandleCrash()
 	defer c.workqueue.ShutDown()
 
+	isValid, err := c.IsValidKubernetesVersion()
+	if err != nil {
+		return err
+	}
+	if !isValid {
+		return fmt.Errorf("Invalid Kubernetes version, minimal kubernetes version %s", MinimalKubernetesVersion)
+	}
 	// Start the informer factories to begin populating the informer caches
 	klog.Info("Starting StorageClassCapability controller")
 
@@ -272,6 +289,19 @@ func (c *Controller) syncHandler(key string) error {
 		return err
 	}
 	return nil
+}
+
+func (c *Controller) IsValidKubernetesVersion() (bool, error) {
+	minVer := version.MustParseGeneric(MinimalKubernetesVersion)
+	rawVer, err := c.kubeclientset.Discovery().ServerVersion()
+	if err != nil {
+		return false, err
+	}
+	ver, err := version.ParseSemantic(rawVer.String())
+	if err != nil {
+		return false, err
+	}
+	return ver.AtLeast(minVer), nil
 }
 
 func newSccap(storageClass *v1.StorageClass, snapClass *snapapi.VolumeSnapshotClass, pcap *crdapi.ProvisionerCapability) *crdapi.StorageClassCapability {

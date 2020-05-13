@@ -25,14 +25,12 @@ type csiSidecarController struct {
 func NewCSISidecarController(
 	clientSet clientset.Interface,
 	csiConn *grpc.ClientConn,
-	driverName string,
 	timeout time.Duration,
 	resyncPeriod time.Duration,
 ) *csiSidecarController {
 	return &csiSidecarController{
 		clientset:     clientSet,
 		pluginHandler: handler.NewPlugin(csiConn, timeout),
-		driverName:    driverName,
 		timeout:       timeout,
 		resyncPeriod:  resyncPeriod,
 	}

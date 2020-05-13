@@ -39,6 +39,11 @@ func main() {
 	if err != nil {
 		klog.Fatalf("Error building storage capability clientset: %s", err.Error())
 	}
+	list, err := crdClient.Discovery().ServerResourcesForGroupVersion("storage.kubesphere.io/v1alpha1")
+	if err != nil {
+		klog.Error(err)
+	}
+	klog.Info("list: ", list.String())
 
 	snapClient, err := snapclientset.NewForConfig(cfg)
 	if err != nil {

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: storage-capability
+    owner: yunify
+    role: controller
+    ver: v0.1.0
+  name: storage-capability-controller
+  namespace: kube-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storage-capability
+      owner: yunify
+      role: controller
+      ver: v0.1.0
+  template:
+    metadata:
+      labels:
+        app: storage-capability
+        owner: yunify
+        role: controller
+        ver: v0.1.0
+    spec:
+      containers:
+        - args:
+            - --v=5
+          image: wangxinsh/storage-capability-controller:v0.1.0
+          imagePullPolicy: Always
+          name: controller
+          resources:
+            limits:
+              cpu: 80m
+              memory: 80Mi
+            requests:
+              cpu: 80m
+              memory: 80Mi
+      serviceAccount: storage-capability-controller

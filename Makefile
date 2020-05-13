@@ -14,16 +14,25 @@
 # | limitations under the License.
 # +-------------------------------------------------------------------------
 
-.PHONY: all get-api
+.PHONY: all get-api sidecar controller
+
+all: get-api sidecar controller
+
+SIDECAR_IMAGE_NAME=wangxinsh/storage-capability-sidecar
+SIDECAR_VERSION=v0.1.0
+CONTROLLER_IMAGE_NAME=wangxinsh/storage-capability-controller
+CONTROLLER_VERSION=v0.1.0
 
 get-api: fmt
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build  -a -ldflags '-extldflags "-static"' -o  _output/get-api ./cmd/get-api/main.go
 
 sidecar: fmt
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build  -a -ldflags '-extldflags "-static"' -o  _output/sidecar ./cmd/sidecar/main.go
+	docker build -t ${SIDECAR_IMAGE_NAME}:${SIDECAR_VERSION} -f build/sidecar/Dockerfile .
 
 controller: fmt
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build  -a -ldflags '-extldflags "-static"' -o  _output/controller ./cmd/controller/main.go
+	docker build -t ${CONTROLLER_IMAGE_NAME}:${CONTROLLER_VERSION} -f build/controller/Dockerfile .
 
 fmt:
 	go fmt ./cmd/... ./pkg/...

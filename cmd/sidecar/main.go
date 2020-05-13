@@ -16,7 +16,7 @@ import (
 const (
 	// Default timeout of short CSI calls like GetPluginInfo
 	defaultTimeout = time.Minute
-	version        = "unknown"
+	version        = "v0.1.0"
 )
 
 var (
@@ -26,7 +26,6 @@ var (
 	csiNodeAddress = flag.String("csi-node-address", "", "Address of the CSI Node driver socket.")
 	timeout        = flag.Duration("timeout", defaultTimeout, "The timeout for any RPCs to the CSI driver. Default is 1 minute.")
 	resyncPeriod   = flag.Duration("resync-period", 60*time.Second, "Resync interval of the controller.")
-	driverName     = flag.String("driver-name", "", "The provisioner name of plugin")
 )
 
 func main() {
@@ -60,7 +59,6 @@ func main() {
 	controller := sidecar.NewCSISidecarController(
 		clientset,
 		csiConn,
-		*driverName,
 		*timeout,
 		*resyncPeriod,
 	)
