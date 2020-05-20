@@ -1,0 +1,21 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: storage-capability
+    owner: yunify
+    role: sidecar
+    ver: v0.1.0
+  name: storage-capability-sidecar
+rules:
+  - apiGroups:
+      - "storage.kubesphere.io"
+    resources:
+      - provisionercapabilities
+    verbs:
+      - create
+      - get
+      - list
+      - watch
+      - update
+      - patch

@@ -16,6 +16,6 @@
 
 FROM gcr.azk8s.cn/google_containers/debian-base:v1.0.0
 LABEL maintainers="Yunify"
-COPY _output/sidecar /sidecar
-RUN chmod +x /sidecar
-ENTRYPOINT ["/sidecar"]
+COPY _output/webhook /webhook
+RUN chmod +x /webhook
+ENTRYPOINT ["/webhook"]

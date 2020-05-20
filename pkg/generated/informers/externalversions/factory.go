@@ -23,9 +23,9 @@ import (
 	sync "sync"
 	time "time"
 
-	versioned "github.com/wnxn/storage-capability/pkg/generated/clientset/versioned"
-	internalinterfaces "github.com/wnxn/storage-capability/pkg/generated/informers/externalversions/internalinterfaces"
-	storagecapability "github.com/wnxn/storage-capability/pkg/generated/informers/externalversions/storagecapability"
+	versioned "github.com/kubesphere/storage-capability/pkg/generated/clientset/versioned"
+	internalinterfaces "github.com/kubesphere/storage-capability/pkg/generated/informers/externalversions/internalinterfaces"
+	storagecapability "github.com/kubesphere/storage-capability/pkg/generated/informers/externalversions/storagecapability"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"

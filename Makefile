@@ -14,14 +14,16 @@
 # | limitations under the License.
 # +-------------------------------------------------------------------------
 
-.PHONY: all get-api sidecar controller
+.PHONY: all get-api sidecar controller webhook
 
 all: get-api sidecar controller
 
-SIDECAR_IMAGE_NAME=wangxinsh/storage-capability-sidecar
+SIDECAR_IMAGE_NAME=kubespheredev/storage-capability-sidecar
 SIDECAR_VERSION=v0.1.0
-CONTROLLER_IMAGE_NAME=wangxinsh/storage-capability-controller
+CONTROLLER_IMAGE_NAME=kubespheredev/storage-capability-controller
 CONTROLLER_VERSION=v0.1.0
+WEBHOOK_IMAGE_NAME=kubespheredev/storage-capability-webhook
+WEBHOOK_VERSION=v0.1.0
 
 get-api: fmt
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build  -a -ldflags '-extldflags "-static"' -o  _output/get-api ./cmd/get-api/main.go
@@ -33,6 +35,10 @@ sidecar: fmt
 controller: fmt
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build  -a -ldflags '-extldflags "-static"' -o  _output/controller ./cmd/controller/main.go
 	docker build -t ${CONTROLLER_IMAGE_NAME}:${CONTROLLER_VERSION} -f build/controller/Dockerfile .
+
+webhook: fmt
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build  -a -ldflags '-extldflags "-static"' -o  _output/webhook ./cmd/webhook/main.go
+	docker build -t ${WEBHOOK_IMAGE_NAME}:${WEBHOOK_VERSION} -f build/webhook/Dockerfile .
 
 fmt:
 	go fmt ./cmd/... ./pkg/...
