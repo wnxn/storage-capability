@@ -19,9 +19,9 @@ limitations under the License.
 package fake
 
 import (
-	clientset "github.com/wnxn/storage-capability/pkg/generated/clientset/versioned"
-	storagev1alpha1 "github.com/wnxn/storage-capability/pkg/generated/clientset/versioned/typed/storagecapability/v1alpha1"
-	fakestoragev1alpha1 "github.com/wnxn/storage-capability/pkg/generated/clientset/versioned/typed/storagecapability/v1alpha1/fake"
+	clientset "github.com/kubesphere/storage-capability/pkg/generated/clientset/versioned"
+	storagev1alpha1 "github.com/kubesphere/storage-capability/pkg/generated/clientset/versioned/typed/storagecapability/v1alpha1"
+	fakestoragev1alpha1 "github.com/kubesphere/storage-capability/pkg/generated/clientset/versioned/typed/storagecapability/v1alpha1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"

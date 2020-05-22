@@ -21,7 +21,7 @@ package versioned
 import (
 	"fmt"
 
-	storagev1alpha1 "github.com/wnxn/storage-capability/pkg/generated/clientset/versioned/typed/storagecapability/v1alpha1"
+	storagev1alpha1 "github.com/kubesphere/storage-capability/pkg/generated/clientset/versioned/typed/storagecapability/v1alpha1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"

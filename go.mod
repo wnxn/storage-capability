@@ -1,4 +1,4 @@
-module github.com/wnxn/storage-capability
+module github.com/kubesphere/storage-capability
 
 go 1.12
 

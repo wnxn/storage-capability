@@ -3,16 +3,12 @@ kind: CustomResourceDefinition
 metadata:
   name: provisionercapabilities.storage.kubesphere.io
 spec:
-  # group name to use for REST API: /apis/<group>/<version>
   group: storage.kubesphere.io
   version: v1alpha1
   preserveUnknownFields: false
   names:
-    # plural name to be used in the URL: /apis/<group>/<version>/<plural>
     plural: provisionercapabilities
-    # singular name to be used as an alias on the CLI and for display
     singular: provisionercapability
-    # kind is normally the CamelCased singular type. Your resource manifests use this.
     kind: ProvisionerCapability
     shortNames:
       - pcap

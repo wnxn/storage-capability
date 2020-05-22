@@ -1,10 +1,10 @@
 package sidecar
 
 import (
-	"github.com/wnxn/storage-capability/pkg/apis/storagecapability/v1alpha1"
-	clientset "github.com/wnxn/storage-capability/pkg/generated/clientset/versioned"
-	informers "github.com/wnxn/storage-capability/pkg/generated/informers/externalversions/storagecapability/v1alpha1"
-	"github.com/wnxn/storage-capability/pkg/handler"
+	"github.com/kubesphere/storage-capability/pkg/apis/storagecapability/v1alpha1"
+	clientset "github.com/kubesphere/storage-capability/pkg/generated/clientset/versioned"
+	informers "github.com/kubesphere/storage-capability/pkg/generated/informers/externalversions/storagecapability/v1alpha1"
+	"github.com/kubesphere/storage-capability/pkg/handler"
 	"google.golang.org/grpc"
 	"k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
@@ -16,7 +16,6 @@ import (
 type csiSidecarController struct {
 	clientset           clientset.Interface
 	pluginHandler       handler.PluginHandler
-	driverName          string
 	provisionerInformer informers.Interface
 	timeout             time.Duration
 	resyncPeriod        time.Duration
@@ -49,11 +48,6 @@ func (ctrl *csiSidecarController) contentWorker() {
 	if err != nil {
 		return
 	}
-	// Check capability
-	if pcapSpec.PluginInfo.Name != ctrl.driverName {
-		klog.Errorf("Provisioner name mismatch error: expect %s, but actually %s", ctrl.driverName, pcapSpec.PluginInfo.Name)
-		return
-	}
 	// Create or update Provisioner CRD
 	pcap, err := ctrl.createOrUpdateProvisionerCRD(pcapSpec)
 	if err != nil {
@@ -69,12 +63,12 @@ func (ctrl *csiSidecarController) createOrUpdateProvisionerCRD(pcapSpec *v1alpha
 		return nil, nil
 	}
 	// Check object existed
-	pcap, err := ctrl.clientset.StorageV1alpha1().ProvisionerCapabilities().Get(ctrl.driverName, v1.GetOptions{})
+	pcap, err := ctrl.clientset.StorageV1alpha1().ProvisionerCapabilities().Get(pcapSpec.PluginInfo.Name, v1.GetOptions{})
 	klog.Info(pcap)
 	if err != nil {
 		klog.Errorf("Get provisioner CRD error: %s", err)
 	}
-	if pcap.GetName() == ctrl.driverName {
+	if pcap.GetName() == pcapSpec.PluginInfo.Name {
 		// Need to update CRD
 		if !reflect.DeepEqual(pcap.Spec, pcapSpec) {
 			klog.V(0).Infof("Update CRD")
@@ -90,7 +84,7 @@ func (ctrl *csiSidecarController) createOrUpdateProvisionerCRD(pcapSpec *v1alpha
 		return ctrl.clientset.StorageV1alpha1().ProvisionerCapabilities().Create(
 			&v1alpha1.ProvisionerCapability{
 				ObjectMeta: v1.ObjectMeta{
-					Name: ctrl.driverName,
+					Name: pcapSpec.PluginInfo.Name,
 				},
 				Spec: *pcapSpec,
 			})

@@ -18,19 +18,18 @@ make
 - Kubernetes v1.17+
 - Install [Kubernetes Snapshot Beta CRDs](https://github.com/kubernetes-csi/external-snapshotter#usage)
 
-### Install CRDs
+### Install CRDs, Cluster Role and Controller
+
+Install those resource once in a Kubernetes cluster.
 
 ```
 kubectl create -f crd/storage-v1alpha1-class-cap.yaml
 kubectl create -f crd/storage-v1alpha1-provisioner-cap.yaml
-```
 
-### Controller
-
-Install one controller in a Kubernetes v1.17+ cluster.
-```
 kubectl create -f deploy/controller-rbac.yaml
 kubectl create -f deploy/controller-deploy.yaml
+
+kubectl create -f deploy/sidecar-clusterrole.yaml
 ``` 
 
 ### CSI Plugin Sidecar
@@ -38,28 +37,6 @@ kubectl create -f deploy/controller-deploy.yaml
 Add sidecar rbac and container in CSI plugin controller server Pod.
 - RBAC
 ```
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  labels:
-    app: storage-capability
-    owner: yunify
-    role: sidecar
-    ver: v0.1.0
-  name: storage-capability-sidecar
-rules:
-  - apiGroups:
-      - "storage.kubesphere.io"
-    resources:
-      - provisionercapabilities
-    verbs:
-      - create
-      - get
-      - list
-      - watch
-      - update
-      - patch
----
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -76,7 +53,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: <CSI PLUGIN SERVICE ACCOUNT NAME>
-    namespace: kube-system
+    namespace: <CSI PLUGIN SERVICE ACCOUNT NAMESPACE>
 ```
 
 - Container
@@ -84,12 +61,11 @@ subjects:
       containers:
         - args:
             - --csi-address=$(ADDRESS)
-            - --driver-name="<drivername.example.com>"
             - --v=5
           env:
             - name: ADDRESS
               value: /csi/csi.sock
-          image: wangxinsh/storage-capability-sidecar:v0.1.0
+          image: kubespheredev/storage-capability-sidecar:v0.1.0
           name: sidecar
           resources:
             limits:

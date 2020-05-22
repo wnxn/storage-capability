@@ -27,12 +27,11 @@ spec:
       containers:
         - args:
             - --csi-address=$(ADDRESS)
-            - --driver-name="disk.csi.qingcloud.com"
             - --v=5
           env:
             - name: ADDRESS
               value: /csi/csi.sock
-          image: wangxinsh/storage-capability-sidecar:v0.1.0
+          image: kubespheredev/storage-capability-sidecar:v0.1.0
           imagePullPolicy: Always
           name: sidecar
           resources:

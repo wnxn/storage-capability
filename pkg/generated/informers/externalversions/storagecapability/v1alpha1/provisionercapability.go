@@ -21,10 +21,10 @@ package v1alpha1
 import (
 	time "time"
 
-	storagecapabilityv1alpha1 "github.com/wnxn/storage-capability/pkg/apis/storagecapability/v1alpha1"
-	versioned "github.com/wnxn/storage-capability/pkg/generated/clientset/versioned"
-	internalinterfaces "github.com/wnxn/storage-capability/pkg/generated/informers/externalversions/internalinterfaces"
-	v1alpha1 "github.com/wnxn/storage-capability/pkg/generated/listers/storagecapability/v1alpha1"
+	storagecapabilityv1alpha1 "github.com/kubesphere/storage-capability/pkg/apis/storagecapability/v1alpha1"
+	versioned "github.com/kubesphere/storage-capability/pkg/generated/clientset/versioned"
+	internalinterfaces "github.com/kubesphere/storage-capability/pkg/generated/informers/externalversions/internalinterfaces"
+	v1alpha1 "github.com/kubesphere/storage-capability/pkg/generated/listers/storagecapability/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"

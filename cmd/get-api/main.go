@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	clientset "github.com/wnxn/storage-capability/pkg/generated/clientset/versioned"
+	clientset "github.com/kubesphere/storage-capability/pkg/generated/clientset/versioned"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"

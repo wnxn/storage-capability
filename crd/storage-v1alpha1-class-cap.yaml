@@ -3,15 +3,11 @@ kind: CustomResourceDefinition
 metadata:
   name: storageclasscapabilities.storage.kubesphere.io
 spec:
-  # group name to use for REST API: /apis/<group>/<version>
   group: storage.kubesphere.io
   version: v1alpha1
   names:
-    # plural name to be used in the URL: /apis/<group>/<version>/<plural>
     plural: storageclasscapabilities
-    # singular name to be used as an alias on the CLI and for display
     singular: storageclasscapability
-    # kind is normally the CamelCased singular type. Your resource manifests use this.
     kind: StorageClassCapability
     shortNames:
       - sccap
@@ -55,13 +51,13 @@ spec:
                   type: object
                   properties:
                     create:
-                      description: 'Determined by ControllerGetCapabilities in ControllerServer'
+                      description: 'Create/Delete volume. Determined by ControllerGetCapabilities in ControllerServer'
                       type: boolean
                     attach:
-                      description: 'Determined by ControllerGetCapabilities in ControllerServer'
+                      description: 'CSI Plugin implement ControllerPublishVolume/ControllerUnpublishVolume. Determined by ControllerGetCapabilities in ControllerServer'
                       type: boolean
                     list:
-                      description: 'Determined by ControllerGetCapabilities in ControllerServer'
+                      description: 'CSI Plugin implement ListVolume. Determined by ControllerGetCapabilities in ControllerServer'
                       type: boolean
                     clone:
                       description: 'Determined by ControllerGetCapabilities in ControllerServer'
@@ -70,7 +66,7 @@ spec:
                       description: 'Determined by NodeGetCapabilities in NodeServer'
                       type: boolean
                     expandMode:
-                      description: 'Determined by GetPluginCapabilities in IdentityServer'
+                      description: 'Determined by GetPluginCapabilities in IdentityServer and StorageClass AllowVolumeExpansion'
                       type: string
                       items:
                         type: string

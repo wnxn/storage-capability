@@ -19,8 +19,8 @@ limitations under the License.
 package storagecapability
 
 import (
-	internalinterfaces "github.com/wnxn/storage-capability/pkg/generated/informers/externalversions/internalinterfaces"
-	v1alpha1 "github.com/wnxn/storage-capability/pkg/generated/informers/externalversions/storagecapability/v1alpha1"
+	internalinterfaces "github.com/kubesphere/storage-capability/pkg/generated/informers/externalversions/internalinterfaces"
+	v1alpha1 "github.com/kubesphere/storage-capability/pkg/generated/informers/externalversions/storagecapability/v1alpha1"
 )
 
 // Interface provides access to each of this group's versions.

@@ -4,9 +4,9 @@ import (
 	"flag"
 	snapclientset "github.com/kubernetes-csi/external-snapshotter/v2/pkg/client/clientset/versioned"
 	snapinformers "github.com/kubernetes-csi/external-snapshotter/v2/pkg/client/informers/externalversions"
-	"github.com/wnxn/storage-capability/pkg/controller"
-	crdclientset "github.com/wnxn/storage-capability/pkg/generated/clientset/versioned"
-	crdinformers "github.com/wnxn/storage-capability/pkg/generated/informers/externalversions"
+	"github.com/kubesphere/storage-capability/pkg/controller"
+	crdclientset "github.com/kubesphere/storage-capability/pkg/generated/clientset/versioned"
+	crdinformers "github.com/kubesphere/storage-capability/pkg/generated/informers/externalversions"
 	kubeinformers "k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
@@ -67,7 +67,7 @@ func main() {
 	crdInformerFactory.Start(stopCh)
 	snapInformerFactory.Start(stopCh)
 
-	if err = controller.Run(2, stopCh); err != nil {
+	if err = controller.Start(stopCh); err != nil {
 		klog.Fatalf("Error running controller: %s", err.Error())
 	}
 }

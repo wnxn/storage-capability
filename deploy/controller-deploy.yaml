@@ -27,7 +27,7 @@ spec:
       containers:
         - args:
             - --v=5
-          image: wangxinsh/storage-capability-controller:v0.1.0
+          image: kubespheredev/storage-capability-controller:v0.1.0
           imagePullPolicy: Always
           name: controller
           resources:

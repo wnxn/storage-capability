@@ -6,7 +6,7 @@ import (
 
 	"context"
 	librpc "github.com/kubernetes-csi/csi-lib-utils/rpc"
-	"github.com/wnxn/storage-capability/pkg/apis/storagecapability/v1alpha1"
+	"github.com/kubesphere/storage-capability/pkg/apis/storagecapability/v1alpha1"
 	"google.golang.org/grpc"
 )
 
