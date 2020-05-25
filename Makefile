@@ -16,7 +16,7 @@
 
 .PHONY: all get-api sidecar controller webhook
 
-all: get-api sidecar controller
+all: get-api sidecar controller webhook
 
 SIDECAR_IMAGE_NAME=kubespheredev/storage-capability-sidecar
 SIDECAR_VERSION=v0.1.0
