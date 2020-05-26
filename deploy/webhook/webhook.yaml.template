@@ -15,11 +15,11 @@ spec:
       labels:
         app: webhook-server
     spec:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1234
+      serviceAccountName: webhook
       containers:
-        - name: server
+        - args:
+            - --v=5
+          name: server
           image: kubespheredev/storage-capability-webhook:v0.1.0
           imagePullPolicy: Always
           ports:
@@ -63,3 +63,53 @@ webhooks:
         apiGroups: [""]
         apiVersions: ["v1"]
         resources: ["pods"]
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: storage-capability
+    owner: yunify
+    role: webhook
+    ver: v0.1.0
+  name: webhook
+  namespace: webhook-demo
+---
+# For https://kubernetes.io/docs/reference/access-authn-authz/rbac/?spm=a2c6h.13066369.0.0.7e152461mepyby#privilege-escalation-prevention-and-bootstrapping, we need the highest privilege.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: storage-capability
+    owner: yunify
+    role: webhook
+    ver: v0.1.0
+  name: storage-capability-webhook
+rules:
+  - apiGroups:
+    - ""
+    - extensions
+    - apps
+    - rbac.authorization.k8s.io
+    - roles.rbac.authorization.k8s.io
+    - authorization.k8s.io
+    resources: ["*"]
+    verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app: storage-capability
+    owner: yunify
+    role: webhook
+    ver: v0.1.0
+  name: storage-capability-webhook
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: storage-capability-webhook
+subjects:
+  - kind: ServiceAccount
+    name: webhook
+    namespace: webhook-demo

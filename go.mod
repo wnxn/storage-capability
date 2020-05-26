@@ -12,7 +12,7 @@ require (
 	github.com/kubernetes-csi/csi-lib-utils v0.7.0
 	github.com/kubernetes-csi/csi-test v2.0.0+incompatible // indirect
 	github.com/kubernetes-csi/external-snapshotter/v2 v2.1.1
-	github.com/pkg/errors v0.8.1 // indirect
+	github.com/pkg/errors v0.8.1
 	github.com/prometheus/client_golang v1.0.0 // indirect
 	golang.org/x/crypto v0.0.0-20200220183623-bac4c82f6975 // indirect
 	golang.org/x/net v0.0.0-20191209160850-c0dbc17a3553 // indirect
